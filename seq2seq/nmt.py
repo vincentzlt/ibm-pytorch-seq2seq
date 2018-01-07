@@ -1,4 +1,6 @@
 import os
+import sys
+sys.path.append(os.path.realpath('.'))
 import argparse
 import logging
 
@@ -6,7 +8,7 @@ import torch
 import torchtext
 
 import seq2seq
-from seq2seq.trainer import SupervisedTrainer
+from trainer import SupervisedTrainer
 from seq2seq.models import EncoderRNN, DecoderRNN, TopKDecoder, Seq2seq
 from seq2seq.loss import Perplexity
 from seq2seq.dataset import SourceField, TargetField
@@ -28,8 +30,12 @@ parser.add_argument('--resume', action='store_true', dest='resume',
 parser.add_argument('--log-level', dest='log_level',
                     default='info',
                     help='Logging level.')
+TRAIN_PATH='./data/toy_reverse/train/data.txt'
+DEV_PATH='./data/toy_reverse/dev/data.txt'
 
-opt = parser.parse_args()
+opt = parser.parse_args('--train_path {TRAIN_PATH} \
+                        --dev_path {DEV_PATH}'.format(TRAIN_PATH=TRAIN_PATH,
+                                                    DEV_PATH=DEV_PATH).split())
 
 LOG_FORMAT = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 logging.basicConfig(format=LOG_FORMAT, level=getattr(logging, opt.log_level.upper()))
