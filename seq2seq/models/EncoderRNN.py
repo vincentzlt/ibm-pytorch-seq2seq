@@ -41,8 +41,13 @@ class EncoderRNN(BaseRNN):
 
         self.variable_lengths = variable_lengths
         self.embedding = nn.Embedding(vocab_size, hidden_size)
-        self.rnn = self.rnn_cell(hidden_size, hidden_size, n_layers,
-                                 batch_first=True, bidirectional=bidirectional, dropout=dropout_p)
+        self.rnn = self.rnn_cell(
+            input_size=hidden_size,
+            hidden_size=hidden_size,
+            num_layers=n_layers,
+            batch_first=True,
+            bidirectional=bidirectional,
+            dropout=dropout_p)
 
     def forward(self, input_var, input_lengths=None):
         """
